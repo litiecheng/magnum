@@ -224,6 +224,9 @@ See also:
     previously only autodetected canvas size got printed
 -   Added @ref Platform::WindowlessIosContext::glContext() for consistency with
     other context classes
+-   Added @ref Platform::EmscriptenApplication::Configuration::addWindowFlags()
+    and @ref Platform::EmscriptenApplication::Configuration::clearWindowFlags()
+    for consistency with other application implementations
 
 @subsubsection changelog-latest-changes-shaders Shaders library
 
