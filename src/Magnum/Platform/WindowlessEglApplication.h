@@ -43,7 +43,7 @@
 #undef None
 #undef Status
 #include <Corrade/Containers/EnumSet.h>
-#include <Corrade/Containers/Pointer.h>
+#include <Corrade/Containers/Optional.h>
 
 #ifndef DOXYGEN_GENERATING_OUTPUT
 /* Unfortunately Xlib *needs* the Bool type, so provide a typedef instead */
@@ -51,9 +51,8 @@ typedef int Bool;
 #endif
 
 #include "Magnum/Magnum.h"
-#include "Magnum/GL/Context.h"
 #include "Magnum/Tags.h"
-#include "Magnum/Platform/Platform.h"
+#include "Magnum/Platform/GLContext.h"
 
 namespace Magnum { namespace Platform {
 
@@ -682,7 +681,9 @@ class WindowlessEglApplication {
 
     private:
         WindowlessEglContext _glContext;
-        Containers::Pointer<Platform::GLContext> _context;
+        /* Unlike other windowless apps has to be in an Optional because we
+           delay-create it in a constructor with populated Arguments */
+        Containers::Optional<Platform::GLContext> _context;
 
         #ifndef MAGNUM_TARGET_WEBGL
         /* These are saved from command-line arguments */
