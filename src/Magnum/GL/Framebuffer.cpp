@@ -120,11 +120,14 @@ Framebuffer::~Framebuffer() {
     if(!_id || !(_flags & ObjectFlag::DeleteOnDestruction)) return;
 
     /* If bound, remove itself from state */
-    Implementation::FramebufferState& state = Context::current().state().framebuffer;
+    Context& context = Context::current();
+    Implementation::FramebufferState& state = context.state().framebuffer;
     if(state.readBinding == _id) state.readBinding = 0;
 
-    /* For draw binding reset also viewport */
-    if(state.drawBinding == _id) {
+    /* For draw binding reset also viewport. Don't do that for windowless
+       contexts to avoid potential race conditions with default framebuffer on
+       another thread. */
+    if(!(context.configurationFlags() & Context::Configuration::Flag::Windowless) && state.drawBinding == _id) {
         state.drawBinding = 0;
 
         /**
